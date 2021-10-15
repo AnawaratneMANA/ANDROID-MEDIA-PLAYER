@@ -8,6 +8,7 @@
     tools:context=".MainActivity">
 
     <RelativeLayout
+        android:id="@+id/header_section"
         android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -50,7 +51,16 @@
 
         </LinearLayout>
     </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_below="@id/header_section"
+        android:layout_above="@id/footer_section"
+        android:layout_height="match_parent"/>
+
     <LinearLayout
+        android:id="@+id/footer_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -100,13 +110,15 @@
             android:gravity="center">
 
             <ImageView
+                android:id="@+id/previous_button"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
-                android:src="@drawable/pause_botton"
+                android:src="@drawable/previous_button"
                 android:background="@drawable/round_back_10"
                 android:padding="10dp"/>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/play_pause_button"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 app:cardBackgroundColor="@color/custom_green"
@@ -114,17 +126,21 @@
                 app:cardCornerRadius="50dp"
                 android:outlineAmbientShadowColor="#56BA97"
                 android:outlineSpotShadowColor="@color/teal_700">
+                <ImageView
+                    android:id="@+id/play_pause_icon"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:src="@drawable/play_button"
+                    android:layout_gravity="center"/>
             </androidx.cardview.widget.CardView>
 
             <ImageView
-
+                android:id="@+id/next_button"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
-                android:src="@drawable/pause_botton"
+                android:src="@drawable/next_button"
                 android:background="@drawable/round_back_10"
                 android:padding="10dp"/>
-
         </LinearLayout>
     </LinearLayout>
-
 </RelativeLayout>
