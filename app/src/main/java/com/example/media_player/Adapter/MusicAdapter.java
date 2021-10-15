@@ -38,6 +38,11 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
+
+        /**
+         * Register all the UI components in the layout file.
+         * **/
+
         public MyViewHolder(View itemView) {
             super(itemView);
         }
