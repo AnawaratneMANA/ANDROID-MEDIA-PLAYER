@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
+            android:id="@+id/search_button"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
@@ -36,6 +37,7 @@
             android:textStyle="bold"/>
 
         <LinearLayout
+            android:id="@+id/menu_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
