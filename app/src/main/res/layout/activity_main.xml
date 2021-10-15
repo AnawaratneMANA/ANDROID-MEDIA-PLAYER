@@ -74,7 +74,10 @@
                 android:layout_width="match_parent"
                 android:layout_toStartOf="@id/end_time"
                 android:layout_toEndOf="@id/start_time"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:progressDrawable="@drawable/custom_seekbar"
+                android:progress="50"
+                android:max="100"/>
 
             <TextView
                 android:id="@+id/end_time"
