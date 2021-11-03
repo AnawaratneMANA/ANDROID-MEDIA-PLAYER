@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,17 +36,25 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
 
     @Override
     public int getItemCount() {
-        return 0;
+        return list.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    static class MyViewHolder extends RecyclerView.ViewHolder {
 
         /**
          * Register all the UI components in the layout file.
          * **/
+        private final RelativeLayout rootLayout;
+        private final TextView title;
+        private final TextView artist;
+
+
 
         public MyViewHolder(View itemView) {
             super(itemView);
+            rootLayout = itemView.findViewById(R.id.root_layout);
+            title = itemView.findViewById(R.id.music_title);
+            artist = itemView.findViewById(R.id.music_artist);
         }
     }
 }
