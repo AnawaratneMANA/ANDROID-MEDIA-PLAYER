@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final List<MusicList> musicLists = new ArrayList<>();
     private RecyclerView musicRecyleView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,14 +41,14 @@ public class MainActivity extends AppCompatActivity {
 
         final LinearLayout searchButton = findViewById(R.id.search_button);
         final LinearLayout menuButton = findViewById(R.id.menu_button);
-        final RecyclerView musicRecyclerView = findViewById(R.id.recyclerview);
+        musicRecyleView = findViewById(R.id.recyclerview);
         final CardView playPauseCard = findViewById(R.id.play_pause_button);
         final ImageView playPauseImage = findViewById(R.id.play_pause_icon);
         final ImageView nextButton = findViewById(R.id.next_button);
         final ImageView prevButton = findViewById(R.id.previous_button);
 
-        musicRecyclerView.setHasFixedSize(true);
-        musicRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        musicRecyleView.setHasFixedSize(true);
+        musicRecyleView.setLayoutManager(new LinearLayoutManager(this));
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
 
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private void getMusicFile(){
         ContentResolver contentResolver = getContentResolver();
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        Cursor cursor = contentResolver.query(uri, null, MediaStore.Audio.Media.DATA + "LIKE?", new String[]{"%.mp3"}, null);
+        Cursor cursor = contentResolver.query(uri, null, MediaStore.Audio.Media.DATA + " LIKE?", new String[]{"%.mp3%"}, null);
         if(cursor == null){
             Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show();
         } else if (!cursor.moveToNext()) {
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
             }
             musicRecyleView.setAdapter(new MusicAdapter(musicLists, MainActivity.this));
         }
+        cursor.close();
     }
 
     @Override

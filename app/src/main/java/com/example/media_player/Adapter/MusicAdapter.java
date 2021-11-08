@@ -20,6 +20,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
 
     private final List<MusicList> list;
     private final Context context;
+    private int playingPosition = 0;
 
     public MusicAdapter(List<MusicList> list, Context context) {
         this.list = list;
@@ -45,11 +46,13 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
                 TimeUnit.MILLISECONDS.toSeconds(TimeUnit.MILLISECONDS.toMinutes(Long.parseLong((list2.getDuration())))));
         holder.title.setText(list2.getTitle());
         holder.artist.setText(list2.getArtist());
-        holder.musicDuration.setText(list2.getDuration());
+        holder.musicDuration.setText(generateDuration);
         holder.rootLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                list.get(playingPosition).setPlaying(false);
+                list2.setPlaying(true);
+                notifyDataSetChanged();
             }
         });
 
