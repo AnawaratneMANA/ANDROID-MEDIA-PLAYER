@@ -32,6 +32,13 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(MusicAdapter.MyViewHolder holder, int position) {
         MusicList list2 = list.get(position);
+
+        if(list2.isPlaying()){
+            holder.rootLayout.setBackgroundResource(R.drawable.round_back_blue_10);
+        } else  {
+            holder.rootLayout.setBackgroundResource(R.drawable.round_back_10);
+        }
+
     }
 
     @Override

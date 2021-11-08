@@ -9,7 +9,12 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+
+    private final List<MusicList> musicList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
