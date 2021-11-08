@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -20,13 +21,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.media_player.Adapter.MusicAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final List<MusicList> musicList = new ArrayList<>();
-
+    private final List<MusicList> musicLists = new ArrayList<>();
+    private RecyclerView musicRecyleView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +65,26 @@ public class MainActivity extends AppCompatActivity {
     private void getMusicFile(){
         ContentResolver contentResolver = getContentResolver();
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        Cursor cursor = contentResolver.query(uri, null, MediaStore.Audio.Media.DATA + "LIKE?", new String[]{"%.mp3"}, null)
+        Cursor cursor = contentResolver.query(uri, null, MediaStore.Audio.Media.DATA + "LIKE?", new String[]{"%.mp3"}, null);
+        if(cursor == null){
+            Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+        } else if (!cursor.moveToNext()) {
+            Toast.makeText(this, "No Music Found!", Toast.LENGTH_SHORT).show();
+        } else {
+            while(cursor.moveToNext()){
+                final String getMusicFileName = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
+                final String getArtistName = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+                long cursorId = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
+                Uri musicFileUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, cursorId);
+                String getDuration = "00:00";
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+                    getDuration = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.AudioColumns.DURATION));
+                }
+                final MusicList musicList = new MusicList(getMusicFileName, getArtistName, getDuration, false, musicFileUri);
+                musicLists.add(musicList);
+            }
+            musicRecyleView.setAdapter(new MusicAdapter(musicLists, MainActivity.this));
+        }
     }
 
     @Override

@@ -13,6 +13,8 @@ import com.example.media_player.MusicList;
 import com.example.media_player.R;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder> {
 
@@ -38,6 +40,18 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
         } else  {
             holder.rootLayout.setBackgroundResource(R.drawable.round_back_10);
         }
+        String generateDuration = String.format(Locale.getDefault(), "%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(Long.parseLong(list2.getDuration())),
+                TimeUnit.MILLISECONDS.toSeconds(Long.parseLong(list2.getDuration())),
+                TimeUnit.MILLISECONDS.toSeconds(TimeUnit.MILLISECONDS.toMinutes(Long.parseLong((list2.getDuration())))));
+        holder.title.setText(list2.getTitle());
+        holder.artist.setText(list2.getArtist());
+        holder.musicDuration.setText(list2.getDuration());
+        holder.rootLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
     }
 
@@ -54,6 +68,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
         private final RelativeLayout rootLayout;
         private final TextView title;
         private final TextView artist;
+        private final TextView musicDuration;
 
 
 
@@ -62,6 +77,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
             rootLayout = itemView.findViewById(R.id.root_layout);
             title = itemView.findViewById(R.id.music_title);
             artist = itemView.findViewById(R.id.music_artist);
+            musicDuration = itemView.findViewById(R.id.music_duration);
         }
     }
 }

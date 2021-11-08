@@ -3,14 +3,15 @@ package com.example.media_player;
 import android.net.Uri;
 
 public class MusicList {
-   private String title, artist;
+   private String title, artist, duration;
    private boolean isPlaying;
    private Uri musicFile;
 
-    public MusicList(String title, String artist, boolean isPlaying, Uri musicFile) {
+    public MusicList(String title, String artist, String duration, boolean isPlaying, Uri musicFile) {
         this.title = title;
         this.artist = artist;
         this.isPlaying = isPlaying;
+        this.duration = duration;
         this.musicFile = musicFile;
     }
 
@@ -44,5 +45,13 @@ public class MusicList {
 
     public void setMusicFile(Uri musicFile) {
         this.musicFile = musicFile;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 }
