@@ -46,7 +46,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
             holder.rootLayout.setBackgroundResource(R.drawable.round_back_10);
         }
         String generateDuration = String.format(Locale.getDefault(), "%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(Long.parseLong(list2.getDuration())),
-                TimeUnit.MILLISECONDS.toSeconds(Long.parseLong(list2.getDuration())),
+                TimeUnit.MILLISECONDS.toSeconds(Long.parseLong(list2.getDuration())) -
                 TimeUnit.MILLISECONDS.toSeconds(TimeUnit.MILLISECONDS.toMinutes(Long.parseLong((list2.getDuration())))));
         holder.title.setText(list2.getTitle());
         holder.artist.setText(list2.getArtist());
@@ -57,6 +57,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
                 list.get(playingPosition).setPlaying(false);
                 list2.setPlaying(true);
                 System.out.println("Clicking on the Track"); //Testing.
+                songChangeListener.onChange(position);
                 notifyDataSetChanged();
             }
         });

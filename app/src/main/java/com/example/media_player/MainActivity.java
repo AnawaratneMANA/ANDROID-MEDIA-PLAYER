@@ -13,6 +13,8 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,18 +22,27 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.media_player.Adapter.MusicAdapter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements SongChangeListener{
 
     private final List<MusicList> musicLists = new ArrayList<>();
     private RecyclerView musicRecyleView;
-
+    private MediaPlayer mediaPlayer;
+    private TextView startTime, endTime;
+    private boolean isPlaying = false;
+    private SeekBar playerSeekBar;
+    private ImageView playPauseImg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,12 +55,17 @@ public class MainActivity extends AppCompatActivity implements SongChangeListene
         final LinearLayout menuButton = findViewById(R.id.menu_button);
         musicRecyleView = findViewById(R.id.recyclerview);
         final CardView playPauseCard = findViewById(R.id.play_pause_button);
-        final ImageView playPauseImage = findViewById(R.id.play_pause_icon);
+        playPauseImg = findViewById(R.id.play_pause_icon);
         final ImageView nextButton = findViewById(R.id.next_button);
         final ImageView prevButton = findViewById(R.id.previous_button);
+        startTime = findViewById(R.id.start_time);
+        endTime = findViewById(R.id.end_time);
+        playerSeekBar = findViewById(R.id.seek_bar);
+
 
         musicRecyleView.setHasFixedSize(true);
         musicRecyleView.setLayoutManager(new LinearLayoutManager(this));
+        mediaPlayer = new MediaPlayer();
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
             getMusicFile();
@@ -112,6 +128,41 @@ public class MainActivity extends AppCompatActivity implements SongChangeListene
 
     @Override
     public void onChange(int position) {
+        if(mediaPlayer.isPlaying()){
+            mediaPlayer.pause();
+            mediaPlayer.reset();
+        }
 
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mediaPlayer.setDataSource(MainActivity.this, musicLists.get(position).getMusicFile());
+                    mediaPlayer.prepare();
+                } catch (IOException e){
+                    e.printStackTrace();
+                    Toast.makeText(MainActivity.this, "Unable to Play the Track!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }).start();
+
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                final int getTotalDuration = mediaPlayer.getDuration();
+
+                String generateDuration = String.format(Locale.getDefault(), "%02d:%02d",
+                        TimeUnit.MILLISECONDS.toMinutes(getTotalDuration),
+                        TimeUnit.MILLISECONDS.toSeconds(getTotalDuration) -
+                        TimeUnit.MILLISECONDS.toSeconds(TimeUnit.MILLISECONDS.toMinutes(getTotalDuration)));
+
+                endTime.setText(generateDuration);
+                isPlaying = true;
+                mediaPlayer.start();
+                playerSeekBar.setMax(getTotalDuration);
+                playPauseImg.setImageResource(R.drawable.pause_icon);
+            }
+        });
     }
 }
