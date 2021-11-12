@@ -32,6 +32,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements SongChangeListener{
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements SongChangeListene
     private boolean isPlaying = false;
     private SeekBar playerSeekBar;
     private ImageView playPauseImg;
+    private Timer timer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,5 +167,24 @@ public class MainActivity extends AppCompatActivity implements SongChangeListene
                 playPauseImg.setImageResource(R.drawable.pause_icon);
             }
         });
+
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        final int getCurrentDuration = mediaPlayer.getCurrentPosition();
+                        String generaDuration = String.format(Locale.getDefault(), "%02d:%02d",
+                                TimeUnit.MILLISECONDS.toMinutes(getCurrentDuration),
+                                TimeUnit.MILLISECONDS.toSeconds(getCurrentDuration) -
+                                        TimeUnit.MILLISECONDS.toSeconds(TimeUnit.MILLISECONDS.toMinutes(getCurrentDuration)));
+                        playerSeekBar.setProgress(getCurrentDuration);
+                        startTime.setText(generaDuration);
+                    }
+                });
+            }
+        }, 1000, 1000);
     }
 }
