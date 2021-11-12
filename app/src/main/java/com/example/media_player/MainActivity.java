@@ -94,8 +94,26 @@ public class MainActivity extends AppCompatActivity implements SongChangeListene
                 } else {
                     musicLists.get(currentSongListPosition).setPlaying(false);
                     musicLists.get(nextSongListPosition).setPlaying(true);
+                    musicAdapter.updateList(musicLists);
                     musicRecyleView.scrollToPosition(nextSongListPosition);
                     onChange(nextSongListPosition);
+                }
+            }
+        });
+
+        prevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int prevSongListPosition = currentSongListPosition - 1;
+                if(prevSongListPosition<0){
+                    // Play the Last Song.
+                   prevSongListPosition = musicLists.size() - 1;
+                } else {
+                    musicLists.get(currentSongListPosition).setPlaying(false);
+                    musicLists.get(prevSongListPosition).setPlaying(true);
+                    musicAdapter.updateList(musicLists);
+                    musicRecyleView.scrollToPosition(prevSongListPosition);
+                    onChange(prevSongListPosition);
                 }
             }
         });
