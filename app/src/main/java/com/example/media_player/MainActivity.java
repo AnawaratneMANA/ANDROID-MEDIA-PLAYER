@@ -47,6 +47,9 @@ public class MainActivity extends AppCompatActivity implements SongChangeListene
     private SeekBar playerSeekBar;
     private ImageView playPauseImg;
     private Timer timer;
+    private int currentSongListPosition = 0;
+    private MusicAdapter musicAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +84,21 @@ public class MainActivity extends AppCompatActivity implements SongChangeListene
                 getMusicFile();
             }
         }
+
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int nextSongListPosition = currentSongListPosition + 1;
+                if(nextSongListPosition>= musicLists.size()){
+                    nextSongListPosition = 0;
+                } else {
+                    musicLists.get(currentSongListPosition).setPlaying(false);
+                    musicLists.get(nextSongListPosition).setPlaying(true);
+                    musicRecyleView.scrollToPosition(nextSongListPosition);
+                    onChange(nextSongListPosition);
+                }
+            }
+        });
 
         playPauseCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,7 +163,8 @@ public class MainActivity extends AppCompatActivity implements SongChangeListene
                 final MusicList musicList = new MusicList(getMusicFileName, getArtistName, getDuration, false, musicFileUri);
                 musicLists.add(musicList);
             }
-            musicRecyleView.setAdapter(new MusicAdapter(musicLists, MainActivity.this));
+            musicAdapter = new MusicAdapter(musicLists, MainActivity.this);
+            musicRecyleView.setAdapter(musicAdapter);
         }
         cursor.close();
     }
@@ -172,6 +191,7 @@ public class MainActivity extends AppCompatActivity implements SongChangeListene
 
     @Override
     public void onChange(int position) {
+        currentSongListPosition = position;
         if(mediaPlayer.isPlaying()){
             mediaPlayer.pause();
             mediaPlayer.reset();
@@ -184,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements SongChangeListene
                 try {
                     mediaPlayer.setDataSource(MainActivity.this, musicLists.get(position).getMusicFile());
                     mediaPlayer.prepare();
-                } catch (IOException e){
+                } catch (IOException | IllegalStateException e){
                     e.printStackTrace();
                     Toast.makeText(MainActivity.this, "Unable to Play the Track!", Toast.LENGTH_SHORT).show();
                 }
