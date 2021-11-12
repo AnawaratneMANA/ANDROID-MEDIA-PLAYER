@@ -186,5 +186,17 @@ public class MainActivity extends AppCompatActivity implements SongChangeListene
                 });
             }
         }, 1000, 1000);
+
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                mediaPlayer.reset();
+                timer.purge();
+                timer.cancel();
+                isPlaying = false;
+                playPauseImg.setImageResource(R.drawable.play_button);
+                playerSeekBar.setProgress(0);
+            }
+        });
     }
 }
