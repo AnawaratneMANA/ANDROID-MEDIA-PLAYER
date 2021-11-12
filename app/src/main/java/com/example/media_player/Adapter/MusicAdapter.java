@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.media_player.MusicList;
 import com.example.media_player.R;
+import com.example.media_player.SongChangeListener;
 
 import java.util.List;
 import java.util.Locale;
@@ -21,10 +22,12 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
     private final List<MusicList> list;
     private final Context context;
     private int playingPosition = 0;
+    private final SongChangeListener songChangeListener;
 
     public MusicAdapter(List<MusicList> list, Context context) {
         this.list = list;
         this.context = context;
+        this.songChangeListener = ((SongChangeListener)context);
     }
 
     @Override

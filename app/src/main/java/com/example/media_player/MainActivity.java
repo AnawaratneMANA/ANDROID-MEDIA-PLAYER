@@ -27,7 +27,7 @@ import com.example.media_player.Adapter.MusicAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SongChangeListener{
 
     private final List<MusicList> musicLists = new ArrayList<>();
     private RecyclerView musicRecyleView;
@@ -108,5 +108,10 @@ public class MainActivity extends AppCompatActivity {
             int options = View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
             decodeView.setSystemUiVisibility(options);
         }
+    }
+
+    @Override
+    public void onChange(int position) {
+
     }
 }
