@@ -80,6 +80,45 @@ public class MainActivity extends AppCompatActivity implements SongChangeListene
             }
         }
 
+        playPauseCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isPlaying){
+                    isPlaying = false;
+                    mediaPlayer.pause();
+                    playPauseImg.setImageResource(R.drawable.play_button);
+                } else {
+                    isPlaying = true;
+                    mediaPlayer.start();
+                    playPauseImg.setImageResource(R.drawable.pause_icon);
+                }
+            }
+        });
+
+        //Seeking mechanism for the Media Player.
+        playerSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                if(b){
+                    if(isPlaying){
+                        mediaPlayer.seekTo(i);
+                    } else {
+                        mediaPlayer.seekTo(0);
+                    }
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
 
 
     }
