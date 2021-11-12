@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.pm.PackageManager;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         musicRecyleView.setLayoutManager(new LinearLayoutManager(this));
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-
+            getMusicFile();
         } else {
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 11);
@@ -89,9 +90,10 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
     }
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             getMusicFile();
         } else {
