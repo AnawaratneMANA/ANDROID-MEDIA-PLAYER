@@ -37,6 +37,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
         MusicList list2 = list.get(position);
 
         if(list2.isPlaying()){
+            playingPosition = position;
             holder.rootLayout.setBackgroundResource(R.drawable.round_back_blue_10);
         } else  {
             holder.rootLayout.setBackgroundResource(R.drawable.round_back_10);
@@ -52,6 +53,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
             public void onClick(View view) {
                 list.get(playingPosition).setPlaying(false);
                 list2.setPlaying(true);
+                System.out.println("Clicking on the Track"); //Testing.
                 notifyDataSetChanged();
             }
         });
